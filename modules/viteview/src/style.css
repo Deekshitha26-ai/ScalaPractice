@@ -101,3 +101,10 @@ button:focus-visible {
 .mini-table .mini-th { background: #f8fafc; text-align: left; font-weight: 600; }
 .mini-table tr:nth-child(even) .mini-td { background: #f9fafb; }
 
+.flags-table { border-collapse: collapse; margin-top: 12px; }
+.flags-table th, .flags-table td { border: 1px solid #ddd; padding: 8px 12px; }
+.flags-table th { text-align: left; background: #f7f7f7; }
+.flags-table td { vertical-align: middle; }
+.flags-table .cell { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.flags-table img { width: 16px; height: 16px; }
+.flags-table tbody tr:nth-child(even) { background: #fafafa; }
