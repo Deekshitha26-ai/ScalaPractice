@@ -1,64 +1,67 @@
 package com.axiommd.webview
-import com.raquo.laminar.api.L.{HtmlElement, given, *}
 
+import com.raquo.laminar.api.L as L
 
+import L.*
 
 object RenderUsingFlags:
 
-    object Render:
+  private def header(cols: String*): HtmlElement =
+    thead(tr(cols.map(th(_))*))
 
-        trait ToElem[A]:
-            def elem(a: A): Element
+  // One row for a Flags value
+  def flagsRow(f: Flags)(using
+      ToCell[Option[Completed]],
+      ToCell[Option[Draft]],
+      ToCell[Option[Urgent]]
+  ): HtmlElement =
+    tr(
+      tablecell(f.completed),
+      tablecell(f.draft),
+      tablecell(f.urgent)
+    )
 
-        // single Flags -> table (1 row)
-        given flagsToElem: ToElem[Flags] with
-            def elem(f: Flags): Element =
-            table(
-                cls := "flags-table",
-                thead(tr(th("Completed"), th("Draft"), th("Urgent"))),
-                tbody(
-                tr(
-                    summon[ToCell[Option[Completed]]].tdElement(f.completed),
-                    summon[ToCell[Option[Draft]]].tdElement(f.draft),
-                    summon[ToCell[Option[Urgent]]].tdElement(f.urgent)
-                )
-                )
-            )
+  // Single Flags -> table
+  def flagsTable(f: Flags)(using
+      ToCell[Option[Completed]],
+      ToCell[Option[Draft]],
+      ToCell[Option[Urgent]]
+  ): HtmlElement =
+    table(
+      cls := "flags-table",
+      header("Completed", "Draft", "Urgent"),
+      tbody(flagsRow(f))
+    )
 
-        // Iterable[Flags] -> table (many rows)
-        given toElemIterableFlags[C[X] <: Iterable[X]]: ToElem[C[Flags]] with
-            def elem(rows: C[Flags]): Element =
-            table(
-                cls := "flags-table",
-                thead(tr(th("Completed"), th("Draft"), th("Urgent"))),
-                tbody(
-                rows.toSeq.map { f =>
-                    tr(
-                    summon[ToCell[Option[Completed]]].tdElement(f.completed),
-                    summon[ToCell[Option[Draft]]].tdElement(f.draft),
-                    summon[ToCell[Option[Urgent]]].tdElement(f.urgent)
-                    )
-                }*
-                )
-            )
+  // Many Flags -> table
+  def flagsTable[C[X] <: Iterable[X]](rows: C[Flags])(using
+      ToCell[Option[Completed]],
+      ToCell[Option[Draft]],
+      ToCell[Option[Urgent]]
+  ): HtmlElement =
+    table(
+      cls := "flags-table",
+      header("Completed", "Draft", "Urgent"),
+      tbody(rows.toSeq.map(flagsRow)*)
+    )
 
-        
-        given toElemIterableLabeledFlags[C[X] <: Iterable[X]]: ToElem[C[(String, Flags)]] with
-            def elem(rows: C[(String, Flags)]): Element =
-            table(
-                cls := "flags-table",
-                thead(tr(th("Task"), th("Completed"), th("Draft"), th("Urgent"))),
-                tbody(
-                rows.toSeq.map { case (label, f) =>
-                    tr(
-                    td(label),
-                    summon[ToCell[Option[Completed]]].tdElement(f.completed),
-                    summon[ToCell[Option[Draft]]].tdElement(f.draft),
-                    summon[ToCell[Option[Urgent]]].tdElement(f.urgent)
-                    )
-                }*
-                )
-            )
-
-
-    def render[A](a: A)(using r: Render.ToElem[A]): Element = r.elem(a)
+  // Labeled rows -> table
+  def labeledFlagsTable[C[X] <: Iterable[X]](rows: C[(String, Flags)])(using
+      ToCell[Option[Completed]],
+      ToCell[Option[Draft]],
+      ToCell[Option[Urgent]]
+  ): HtmlElement =
+    table(
+      cls := "flags-table",
+      header("Task", "Completed", "Draft", "Urgent"),
+      tbody(
+        rows.toSeq.map { case (label, f) =>
+          tr(
+            L.td(label),                    
+            tablecell(f.completed),
+            tablecell(f.draft),
+            tablecell(f.urgent)
+          )
+        }*
+      )
+    )

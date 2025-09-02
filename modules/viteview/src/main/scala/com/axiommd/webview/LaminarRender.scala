@@ -1,6 +1,5 @@
 package com.axiommd.webview
-import com.raquo.laminar.api.L.{*, given}
-import RenderUsingFlags.Render.given
+import com.raquo.laminar.api.L.*
 
 object LaminarRender:
   def apply(): Element =
@@ -9,7 +8,6 @@ object LaminarRender:
       "Task 2" -> Flags(None,               Some(Draft(1)), Some(Urgent(2)))
     )
     div(
-      
       h2("Rendering data Into elements"),
-      RenderUsingFlags.render(rows)   
+      RenderUsingFlags.labeledFlagsTable(rows)
     )
