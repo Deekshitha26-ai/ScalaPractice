@@ -1,6 +1,6 @@
 package com.axiommd.webview
 
-import com.raquo.laminar.api.L.{*, given}
+import com.raquo.laminar.api.L.*
 
 object RenderData:
 

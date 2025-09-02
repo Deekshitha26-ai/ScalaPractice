@@ -1,22 +1,15 @@
 package com.axiommd
 
-import typings.vscode.mod as vscode
-import typings.vscode.anon.Dispose
+import com.axiommd.webview.utils.*
 import typings.vscode.Thenable
+import typings.vscode.mod as vscode
+import zio.json.*
 
 import scala.collection.immutable
-import scala.util.*
 import scala.scalajs.js
-import scala.scalajs.js.annotation.JSExportTopLevel
-import scala.scalajs.js.UndefOr
-import javax.swing.table.TableColumn
-// import upickle.default._
-import zio.json._
-import javax.xml.catalog.CatalogResolver
-import com.axiommd.webview.utils.*
 
 
-class WebViewPanel (private var _panel: vscode.WebviewPanel,private val _extensionUri: vscode.Uri) :
+class WebViewPanel (private val _panel: vscode.WebviewPanel,private val _extensionUri: vscode.Uri) :
   // Set the webview's initial html content
   _update()
   // Listen for when the panel is disposed

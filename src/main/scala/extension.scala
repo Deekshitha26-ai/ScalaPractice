@@ -1,17 +1,15 @@
-import typings.vscode.mod as vscode
-import typings.vscode.anon.Dispose
+import com.axiommd.WebViewPanel
+import com.axiommd.webview.utils.Console
 import typings.vscode.Thenable
+import typings.vscode.anon.Dispose
+import typings.vscode.mod as vscode
 
 import scala.collection.immutable
-import scala.util.*
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportTopLevel
-import scala.scalajs.js.UndefOr
-
-import com.axiommd.webview.utils.Console
+import scala.util.*
 
 import concurrent.ExecutionContext.Implicits.global
-import com.axiommd.WebViewPanel
 
 object mrpchartjs {
   @JSExportTopLevel("activate")
